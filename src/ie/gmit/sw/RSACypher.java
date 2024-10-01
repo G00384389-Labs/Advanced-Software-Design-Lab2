@@ -25,7 +25,7 @@ public class RSACypher {
 	}
 	
 	public byte[] decrypt(byte[] cypherText) throws Throwable{
-		cypher.init(Cipher.DECRYPT_MODE, keyRing.getPublic());		
+		cypher.init(Cipher.DECRYPT_MODE, keyRing.getPrivate());		
 		return cypher.doFinal(cypherText);
 		
 	}
