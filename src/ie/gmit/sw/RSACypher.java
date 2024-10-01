@@ -7,33 +7,27 @@ import java.security.KeyPairGenerator;
 
 import javax.crypto.Cipher;
 
-public class RSACypher {
-	private Cipher cypher;
+public class RSACypher extends AbstractCypher {
 	private KeyPair keyRing;
 
 	public RSACypher() throws Throwable {
+		super();
 		KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 		keyGen.initialize(2048);
 		keyRing = keyGen.generateKeyPair();
-		cypher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+		super.setCypher(Cipher.getInstance("RSA/ECB/PKCS1Padding"));
 
 	}
 
-	public byte[] encrypt(byte[] plainText) throws Throwable{
-		cypher.init(Cipher.ENCRYPT_MODE, keyRing.getPublic());		
-		return cypher.doFinal(plainText);
+	@Override
+	public byte[] encrypt(byte[] plainText) throws Throwable {
+		return super.encrypt(plainText,keyRing.getPublic());
+	}
+
+	@Override
+	public byte[] decrypt(byte[] cypherText) throws Throwable {
+		return super.decrypt(cypherText,keyRing.getPrivate());
 	}
 	
-	public byte[] decrypt(byte[] cypherText) throws Throwable{
-		cypher.init(Cipher.DECRYPT_MODE, keyRing.getPrivate());		
-		return cypher.doFinal(cypherText);
-		
-	}
-
-	@SuppressWarnings("removal")
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-	}
 
 }
